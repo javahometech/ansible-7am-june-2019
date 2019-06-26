@@ -1,0 +1,33 @@
+---
+
+- hosts: all
+  become: True
+  vars_files:
+    - ./vars/vars.yml
+  tasks:
+    - debug:
+        msg: "{{apache_port}}"
+    - name: Install apache server
+      yum:
+        name: httpd
+        state: present
+    - name: configure httpd port
+      template:
+        src: ./templates/httpd.conf.j2
+        dest: /etc/httpd/conf/httpd.conf
+      notify:
+        - Restart Apache
+    - name: Start and enable apache
+      service:
+        name: httpd
+        state: started
+        enabled: True
+    - name: Deploy web application
+      copy:
+        src: index.html
+        dest: /var/www/html/
+  handlers:
+    - name: Restart Apache
+      service:
+        name: httpd
+        state: restarted
