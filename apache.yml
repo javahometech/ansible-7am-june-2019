@@ -1,6 +1,6 @@
 ---
 
-- hosts: all
+- hosts: webservers
   become: True
   vars_files:
     - ./vars/vars.yml
@@ -11,21 +11,29 @@
       yum:
         name: httpd
         state: present
+      tags:
+        - install
     - name: configure httpd port
       template:
         src: ./templates/httpd.conf.j2
         dest: /etc/httpd/conf/httpd.conf
       notify:
         - Restart Apache
+      tags:
+        - configure
     - name: Start and enable apache
       service:
         name: httpd
         state: started
         enabled: True
+      tags:
+        - start
     - name: Deploy web application
       copy:
         src: index.html
         dest: /var/www/html/
+      tags:
+        - deploy
   handlers:
     - name: Restart Apache
       service:

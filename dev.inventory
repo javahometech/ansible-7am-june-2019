@@ -1,4 +1,31 @@
-172.31.21.176 ansible_user=ec2-user ansible_ssh_private_key_file=~/ansible.pem
+web01 ansible_host=172.31.21.176 ansible_user=ec2-user ansible_ssh_private_key_file=~/ansible.pem ansible_connection=ssh
+
+[webservers]
+
+web01 ansible_host=172.31.21.176 
+web02 ansible_host=172.31.21.176 
+web03 ansible_host=172.31.21.176 
+web04 ansible_host=172.31.21.176 
+web05 ansible_host=172.31.21.176 
+
+
+[webdb:vars]
+ansible_user=ec2-user
+ansible_ssh_private_key_file=~/ansible.pem
+ansible_connection=ssh
+
+
+[db]
+db01 ansible_host=172.31.21.176
+db02 ansible_host=172.31.21.176
+web01 ansible_host=172.31.21.176
+
+[webdb:children]
+webservers
+db
+
+
+
 
 # This is the default ansible 'hosts' file.
 #
