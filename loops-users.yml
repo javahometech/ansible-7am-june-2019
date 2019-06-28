@@ -1,0 +1,18 @@
+---
+
+- hosts: webservers
+  become: true
+  tasks:
+    - name: Create group
+      group:
+        name: javahome
+        state: present
+    - name: Create linux users
+      user:
+        name: "{{item.name}}"
+        group: javahome
+        password: "{{item.password}}"
+      loop:
+        - {name: hari, password: Hari123}
+        - {name: rahul, password: Rahul123}
+        - {name: sitha, password: Sitha123}
