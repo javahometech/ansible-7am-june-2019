@@ -3,7 +3,6 @@
   become: True
   roles:
     - loadbalancer
-
 - hosts: webservers
   become: True
   roles:

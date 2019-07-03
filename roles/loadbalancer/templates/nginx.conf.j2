@@ -2,7 +2,7 @@ events {}
 http {
     upstream backend {
          {% for web in groups.webservers %}
-           server {{web}}:80;
+           server {{web}}:{{apache_port}};
          {% endfor %}
     }
  server {
